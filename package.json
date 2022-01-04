@@ -5,7 +5,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test": "jest --env=jsdom --verbose"
   },
   "dependencies": {
     "axios": "^0.21.1",
@@ -14,6 +15,10 @@
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "swr": "^1.1.2"
+  },
+  "prettier": {
+    "singleQuote": true,
+    "semi": false
   },
   "devDependencies": {
     "@testing-library/dom": "^8.11.1",
@@ -27,8 +32,13 @@
     "jest": "^27.4.5",
     "jest-css-modules": "^2.1.0"
   },
-  "prettier": {
-    "singleQuote": true,
-    "semi": false
+  "jest": {
+    "testPathIgnorePatterns": [
+      "<rootDir>/.next/",
+      "<rootDir>/node_modules/"
+    ],
+    "moduleNameMapper": {
+      "\\.(css)$": "<rootDir>/node_modules/jest-css-modules"
+    }
   }
 }
