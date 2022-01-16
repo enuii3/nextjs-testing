@@ -7,27 +7,32 @@ import CommentPage from '../pages/comment-page'
 
 const handlers = [
   rest.get(
-    'https://jsonplaceholder.typicode.com/comments/?_limit=10',
+    // 'https://jsonplaceholder.typicode.com/comments/?_limit=10',
+    'https://jsonplaceholder.typicode.com/comments/',
     (req, res, ctx) => {
-      return res(
-        ctx.status(200),
-        ctx.json([
-          {
-            postId: 1,
-            id: 1,
-            name: 'dummy name 1',
-            email: 'dummy1@gmail.com',
-            body: 'dummy body 1',
-          },
-          {
-            postId: 2,
-            id: 2,
-            name: 'dummy name 2',
-            email: 'dummy2@gmail.com',
-            body: 'dummy body 2',
-          },
-        ])
-      )
+      const query = req.url.searchParams
+      const _limit = query.get('_limit')
+      if (_limit === '10') {
+        return res(
+          ctx.status(200),
+          ctx.json([
+            {
+              postId: 1,
+              id: 1,
+              name: 'dummy name 1',
+              email: 'dummy1@gmail.com',
+              body: 'dummy body 1',
+            },
+            {
+              postId: 2,
+              id: 2,
+              name: 'dummy name 2',
+              email: 'dummy2@gmail.com',
+              body: 'dummy body 2',
+            },
+          ])
+        )
+      }
     }
   ),
 ]
@@ -56,9 +61,13 @@ describe('CommentPage with useSWR / success + Error', () => {
   it('Should render Error text when fetch faild', async () => {
     server.use(
       rest.get(
-        'https://jsonplaceholder.typicode.com/comments/?_limit=10',
+        'https://jsonplaceholder.typicode.com/comments/',
         (req, res, ctx) => {
-          return res(ctx.status(400))
+          const query = req.url.searchParams
+          const _limit = query.get('_limit')
+          if (_limit === '10') {
+            return res(ctx.status(400))
+          }
         }
       )
     )

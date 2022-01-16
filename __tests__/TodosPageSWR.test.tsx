@@ -8,25 +8,30 @@ import { TASK } from '../types/Types'
 
 const server = setupServer(
   rest.get(
-    'https://jsonplaceholder.typicode.com/todos/?_limit=10',
+    // 'https://jsonplaceholder.typicode.com/todos/?_limit=10',
+    'https://jsonplaceholder.typicode.com/todos/',
     (req, res, ctx) => {
-      return res(
-        ctx.status(200),
-        ctx.json([
-          {
-            userId: 1,
-            id: 1,
-            title: 'Task A',
-            completed: false,
-          },
-          {
-            userId: 2,
-            id: 2,
-            title: 'Task B',
-            completed: true,
-          },
-        ])
-      )
+      const query = req.url.searchParams
+      const _limit = query.get('_limit')
+      if (_limit === '10') {
+        return res(
+          ctx.status(200),
+          ctx.json([
+            {
+              userId: 1,
+              id: 1,
+              title: 'Task A',
+              completed: false,
+            },
+            {
+              userId: 2,
+              id: 2,
+              title: 'Task B',
+              completed: true,
+            },
+          ])
+        )
+      }
     }
   )
 )
@@ -72,9 +77,13 @@ describe('Todo Page / useSRW', () => {
   it('Should render Error text when fetch faild', async () => {
     server.use(
       rest.get(
-        'https://jsonplaceholder.typicode.com/todos/?_limit=10',
+        'https://jsonplaceholder.typicode.com/todos/',
         (req, res, ctx) => {
-          return res(ctx.status(400))
+          const query = req.url.searchParams
+          const _limit = query.get('_limit')
+          if (_limit === '10') {
+            return res(ctx.status(400))
+          }
         }
       )
     )

@@ -8,25 +8,30 @@ import { setupServer } from 'msw/node'
 initTestHelpers()
 
 const handlers = rest.get(
-  'https://jsonplaceholder.typicode.com/todos/?_limit=10',
+  // 'https://jsonplaceholder.typicode.com/todos/?_limit=10',
+  'https://jsonplaceholder.typicode.com/todos/',
   (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json([
-        {
-          userId: 3,
-          id: 3,
-          title: 'Static Task C',
-          completed: true,
-        },
-        {
-          userId: 4,
-          id: 4,
-          title: 'Static Task D',
-          completed: false,
-        },
-      ])
-    )
+    const query = req.url.searchParams
+    const _limit = query.get('_limit')
+    if (_limit === '10') {
+      return res(
+        ctx.status(200),
+        ctx.json([
+          {
+            userId: 3,
+            id: 3,
+            title: 'Static Task C',
+            completed: true,
+          },
+          {
+            userId: 4,
+            id: 4,
+            title: 'Static Task D',
+            completed: false,
+          },
+        ])
+      )
+    }
   }
 )
 
